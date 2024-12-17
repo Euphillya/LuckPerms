@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'master'
+      - 'feat/folia'
     tags:
       - 'v*'
   pull_request:

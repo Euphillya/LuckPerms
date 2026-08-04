@@ -88,7 +88,7 @@ public class LPFidorialPlugin extends AbstractLuckPermsPlugin {
     }
 
     public PluginContext getContext() {
-        return this.bootstrap.getLoader();
+        return this.bootstrap.getContext();
     }
 
     public Server getServer() {
@@ -96,10 +96,7 @@ public class LPFidorialPlugin extends AbstractLuckPermsPlugin {
     }
 
     public Object getServiceOwner() {
-        if (this.serviceOwner == null) {
-            this.serviceOwner = getServer().plugins().plugin("luckperms").map(Object.class::cast).orElse(this);
-        }
-        return this.serviceOwner;
+        return this.bootstrap.getLoader();
     }
 
     @Override

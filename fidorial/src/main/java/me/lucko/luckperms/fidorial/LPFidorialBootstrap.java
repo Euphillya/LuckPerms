@@ -91,6 +91,9 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
     private final CountDownLatch loadLatch = new CountDownLatch(1);
     private final CountDownLatch enableLatch = new CountDownLatch(1);
 
+    private static final String PLUGIN_ID = "luckperms";
+    private Object loaderPlugin;
+
     public LPFidorialBootstrap(final PluginContext context) {
         this.context = context;
 
@@ -103,7 +106,17 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
     // provide adapters
 
     @Override
-    public PluginContext getLoader() {
+    public Object getLoader() {
+        if (this.loaderPlugin == null) {
+            this.loaderPlugin = this.context.server().plugins()
+                    .plugin(PLUGIN_ID)
+                    .map(Object.class::cast)
+                    .orElse(this);
+        }
+        return this.loaderPlugin;
+    }
+
+    public PluginContext getContext() {
         return this.context;
     }
 

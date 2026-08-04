@@ -1,0 +1,18 @@
+{
+  "id": "luckperms",
+  "name": "LuckPerms",
+  "version": "${pluginVersion}",
+  "main": "me.lucko.luckperms.fidorial.loader.FidorialLoaderPlugin",
+  "authors": [
+    "Luck",
+    "Euphyllia"
+  ],
+  "depends": [],
+  "permissions": {
+    "luckperms.*": {
+      "description": "Access to every LuckPerms command",
+      "regular": "NOT_SET",
+      "operator": "TRUE"
+    }
+  }
+}

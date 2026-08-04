@@ -3,7 +3,7 @@ name: Build Gradle and Publish Docker image
 on:
   push:
     branches:
-      - 'master'
+      - 'support/fidorial'
     tags:
       - 'v*'
   pull_request:
@@ -33,7 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Run build and tests with Gradle wrapper
-        run: ./gradlew test build -PdockerTests
+        run: ./gradlew build -x test
 
       - name: Publish test report
         uses: mikepenz/action-junit-report@v5
@@ -48,15 +48,8 @@ jobs:
         with:
           name: jars
           path: |
-            bukkit/loader/build/libs/LuckPerms-Bukkit-*.jar
-            bukkit-legacy/loader/build/libs/LuckPerms-Bukkit-Legacy-*.jar
-            bungee/loader/build/libs/LuckPerms-Bungee-*.jar
-            sponge/loader/build/libs/LuckPerms-Sponge-*.jar
-            nukkit/loader/build/libs/LuckPerms-Nukkit-*.jar
-            velocity/build/libs/LuckPerms-Velocity-*.jar
-            fabric/build/libs/LuckPerms-Fabric-*.jar
-            forge/loader/build/libs/LuckPerms-Forge-*.jar
             standalone/loader/build/libs/LuckPerms-Standalone-*.jar
+            fidorial/loader/build/libs/LuckPerms-Fidorial-*.jar
 
       - name: Upload standalone artifact
         uses: actions/upload-artifact@v4

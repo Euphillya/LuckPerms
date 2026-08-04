@@ -1,0 +1,42 @@
+plugins {
+    alias(libs.plugins.shadow)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+}
+
+repositories {
+    maven { url 'https://repo.euphyllia.moe/repository/maven-public/' }
+}
+
+dependencies {
+    implementation project(':api')
+    implementation project(':common:loader-utils')
+
+    compileOnly "fr.fidorial:fidorial-api:${fidorialApiVersion}"
+}
+
+processResources {
+    filesMatching('fidorial.json') {
+        expand 'pluginVersion': project.ext.fullVersion
+    }
+}
+
+shadowJar {
+    archiveFileName = "LuckPerms-Fidorial-${project.ext.fullVersion}.jar"
+
+    from {
+        project(':fidorial').tasks.shadowJar.archiveFile
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

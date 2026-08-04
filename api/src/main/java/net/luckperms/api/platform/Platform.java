@@ -79,11 +79,12 @@ public interface Platform {
         NEOFORGE("NeoForge"),
         FORGE("Forge"),
         STANDALONE("Standalone"),
-        HYTALE("Hytale");
+        HYTALE("Hytale"),
+        FIDORIAL("Fidorial");
 
         private final String friendlyName;
 
-        Type(String friendlyName) {
+        Type(final String friendlyName) {
             this.friendlyName = friendlyName;
         }
 

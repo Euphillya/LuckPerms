@@ -65,14 +65,11 @@ public class FidorialCommandExecutor extends CommandManager {
                         .executes(context -> execute(context.getSource(), StringArgumentType.getString(context, ARGUMENTS))))
                 .build();
 
-        this.plugin.getServer().commands().register(node, ALIASES);
+        this.plugin.getServer().commands().register(plugin.getBootstrap().getContext().meta(), node, ALIASES);
     }
 
     public void unregister() {
-        this.plugin.getServer().commands().unregister(PRIMARY_ALIAS);
-        for (final String alias : ALIASES) {
-            this.plugin.getServer().commands().unregister(alias);
-        }
+        this.plugin.getServer().commands().unregisterNamespace(plugin.getBootstrap().getContext().meta());
     }
 
     private int execute(final CommandSource source, final String arguments) {

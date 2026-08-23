@@ -207,7 +207,7 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
 
     @Override
     public String getServerBrand() {
-        return getServer().getName();
+        return getServer().brandName();
     }
 
     @Override

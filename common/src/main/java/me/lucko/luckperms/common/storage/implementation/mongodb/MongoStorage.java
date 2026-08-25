@@ -31,6 +31,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -123,7 +124,12 @@ public class MongoStorage implements StorageImplementation {
                 .uuidRepresentation(UuidRepresentation.JAVA_LEGACY);
 
         if (!Strings.isNullOrEmpty(this.connectionUri)) {
-            this.mongoClient = new MongoClient(new MongoClientURI(this.connectionUri, options));
+            MongoClientURI uri = new MongoClientURI(this.connectionUri, options);
+            this.mongoClient = new MongoClient(uri);
+
+            String databaseName = uri.getDatabase() != null ? uri.getDatabase() : this.configuration.getDatabase();
+            this.database = this.mongoClient.getDatabase(databaseName);
+
         } else {
             MongoCredential credential = null;
             if (!Strings.isNullOrEmpty(this.configuration.getUsername())) {
@@ -147,10 +153,15 @@ public class MongoStorage implements StorageImplementation {
             } else {
                 this.mongoClient = new MongoClient(address, credential, options.build());
             }
+
+            this.database = this.mongoClient.getDatabase(this.configuration.getDatabase());
         }
-        
-        this.database = this.mongoClient.getDatabase(this.configuration.getDatabase());
-        ensureIndexes();
+
+        try {
+            ensureIndexes();
+        } catch (MongoException e) {
+            // ignore
+        }
     }
 
     @Override

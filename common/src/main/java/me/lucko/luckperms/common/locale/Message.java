@@ -219,7 +219,9 @@ public interface Message {
                     .append(space())
                     .append(text('>', style(BOLD)))
                     .append(space())
-                    .append(text(label + " user " + username + " permission set luckperms.* true", GREEN))
+                    .append(text(label + " user " + username + " permission set luckperms.* true", GREEN)
+                            .clickEvent(ClickEvent.copyToClipboard(label + " user " + username + " permission set luckperms.* true"))
+                            .hoverEvent(HoverEvent.showText(translatable("luckperms.first-time.click-to-copy"))))
                     .append(newline())),
             prefixed(translatable()
                     .key("luckperms.first-time.next-step")
@@ -4283,9 +4285,9 @@ public interface Message {
         return text()
                 .append(text()
                         .color(DARK_GRAY)
-                        .append(text("["))
+                        .append(OPEN_BRACKET)
                         .append(type)
-                        .append(text("]:")))
+                        .append(CLOSE_BRACKET))
                 .append(space())
                 .append(key)
                 .build();

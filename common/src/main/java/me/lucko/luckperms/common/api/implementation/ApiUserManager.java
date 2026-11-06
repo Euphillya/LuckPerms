@@ -38,8 +38,8 @@ import net.luckperms.api.model.PlayerSaveResult;
 import net.luckperms.api.node.HeldNode;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.matcher.NodeMatcher;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -196,6 +196,6 @@ public class ApiUserManager extends ApiAbstractManager<User, net.luckperms.api.m
     @Override
     public void cleanupUser(net.luckperms.api.model.user.@NonNull User user) {
         Objects.requireNonNull(user, "user");
-        this.handle.getHouseKeeper().clearApiUsage(ApiUser.cast(user).getUniqueId());
+        this.handle.getHouseKeeper().unregisterApiUsage(ApiUser.cast(user).getUniqueId());
     }
 }

@@ -25,8 +25,8 @@
 
 package me.lucko.luckperms.fidorial.listeners;
 
-import fr.fidorial.entity.Player;
-import fr.fidorial.entity.PlayerProfile;
+import fr.fidorial.entity.player.Player;
+import fr.fidorial.entity.player.profile.PlayerProfile;
 import fr.fidorial.event.EventBus;
 import fr.fidorial.event.EventPriority;
 import fr.fidorial.event.player.PlayerLoginAttemptEvent;

@@ -26,7 +26,7 @@
 package me.lucko.luckperms.fidorial.context;
 
 import fr.fidorial.entity.GameMode;
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import fr.fidorial.world.World;
 import me.lucko.luckperms.common.config.ConfigKeys;
 import me.lucko.luckperms.common.context.ImmutableContextSetImpl;
@@ -38,7 +38,7 @@ import net.luckperms.api.context.ContextConsumer;
 import net.luckperms.api.context.ContextSet;
 import net.luckperms.api.context.DefaultContextKeys;
 import net.luckperms.api.context.ImmutableContextSet;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Locale;
 import java.util.Set;
@@ -76,7 +76,7 @@ public class FidorialPlayerCalculator implements ContextCalculator<Player> {
             }
         }
         if (this.world) {
-            for (final World world : this.plugin.getServer().worlds()) {
+            for (final World world : this.plugin.getServer().worlds().all()) {
                 final String worldName = FidorialCompat.worldKey(world);
                 if (Context.isValidValue(worldName)) {
                     builder.add(DefaultContextKeys.WORLD_KEY, worldName);

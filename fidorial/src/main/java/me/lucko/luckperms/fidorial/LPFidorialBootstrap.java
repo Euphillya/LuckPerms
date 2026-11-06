@@ -26,9 +26,10 @@
 package me.lucko.luckperms.fidorial;
 
 import fr.fidorial.Server;
-import fr.fidorial.entity.OfflinePlayer;
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.OfflinePlayer;
+import fr.fidorial.entity.player.Player;
 import fr.fidorial.plugin.PluginContext;
+import fr.fidorial.version.BuildSpecification;
 import me.lucko.luckperms.common.loader.LoaderBootstrap;
 import me.lucko.luckperms.common.plugin.bootstrap.BootstrappedWithLoader;
 import me.lucko.luckperms.common.plugin.bootstrap.LuckPermsBootstrap;
@@ -36,7 +37,7 @@ import me.lucko.luckperms.common.plugin.classpath.ClassPathAppender;
 import me.lucko.luckperms.common.plugin.classpath.JarInJarClassPathAppender;
 import me.lucko.luckperms.common.plugin.logging.PluginLogger;
 import net.luckperms.api.platform.Platform;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -212,8 +213,8 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
 
     @Override
     public String getServerVersion() {
-        final Server server = getServer();
-        return server.minecraftVersion() + " (protocol " + server.protocolVersion() + ")";
+        final BuildSpecification build = getServer().buildSpecification();
+        return build.minecraftVersion().name() + " (protocol " + build.protocolVersion() + ")";
     }
 
     @Override
@@ -223,27 +224,27 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
 
     @Override
     public Optional<Player> getPlayer(final UUID uniqueId) {
-        return getServer().player(uniqueId).map(p -> (Player) p);
+        return getServer().players().get(uniqueId).map(p -> (Player) p);
     }
 
     @Override
     public Optional<UUID> lookupUniqueId(final String username) {
-        return getServer().offlinePlayers().cached(username).map(OfflinePlayer::uuid);
+        return getServer().players().offline().cached(username).map(OfflinePlayer::uuid);
     }
 
     @Override
     public Optional<String> lookupUsername(final UUID uniqueId) {
-        return getServer().offlinePlayers().cached(uniqueId).flatMap(OfflinePlayer::name);
+        return getServer().players().offline().cached(uniqueId).flatMap(OfflinePlayer::name);
     }
 
     @Override
     public int getPlayerCount() {
-        return getServer().playerCount();
+        return getServer().players().count();
     }
 
     @Override
     public Collection<String> getPlayerList() {
-        final Collection<? extends Player> players = getServer().onlinePlayers();
+        final Collection<? extends Player> players = getServer().players().online();
         final List<String> list = new ArrayList<>(players.size());
         for (final Player player : players) {
             list.add(player.name());
@@ -253,7 +254,7 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
 
     @Override
     public Collection<UUID> getOnlinePlayers() {
-        final Collection<? extends Player> players = getServer().onlinePlayers();
+        final Collection<? extends Player> players = getServer().players().online();
         final List<UUID> list = new ArrayList<>(players.size());
         for (final Player player : players) {
             list.add(player.uuid());
@@ -263,7 +264,7 @@ public class LPFidorialBootstrap implements LuckPermsBootstrap, LoaderBootstrap,
 
     @Override
     public boolean isPlayerOnline(final UUID uniqueId) {
-        return getServer().player(uniqueId).isPresent();
+        return getServer().players().get(uniqueId).isPresent();
     }
 
     @Override

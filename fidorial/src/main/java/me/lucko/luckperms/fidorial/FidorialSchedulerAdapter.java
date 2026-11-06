@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import me.lucko.luckperms.common.plugin.scheduler.JavaSchedulerAdapter;
 import me.lucko.luckperms.common.plugin.scheduler.SchedulerAdapter;
 import me.lucko.luckperms.common.sender.AbstractSender;

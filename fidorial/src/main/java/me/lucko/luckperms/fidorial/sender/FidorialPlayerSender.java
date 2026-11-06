@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial.sender;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import me.lucko.luckperms.common.locale.TranslationManager;
 import me.lucko.luckperms.fidorial.LPFidorialPlugin;
 import me.lucko.luckperms.fidorial.util.FidorialCompat;
@@ -75,7 +75,7 @@ public class FidorialPlayerSender implements FidorialSender {
 
     @Override
     public void performCommand(final String command) {
-        this.plugin.getServer().commands().dispatchAsync(this.player, command).join();
+        this.plugin.getServer().commands().dispatchAsync(this.player.commandSource(), command).join();
     }
 
     @Override

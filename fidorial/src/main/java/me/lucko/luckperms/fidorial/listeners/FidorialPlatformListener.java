@@ -42,7 +42,7 @@ public class FidorialPlatformListener {
     }
 
     public void insertKnownPermissions() {
-        for (final PermissionDefinition definition : this.plugin.getServer().permissions().definitions()) {
+        for (final PermissionDefinition definition : this.plugin.getServer().registries().permissions().definitions()) {
             this.plugin.getPermissionRegistry().insert(definition.node().path());
         }
     }

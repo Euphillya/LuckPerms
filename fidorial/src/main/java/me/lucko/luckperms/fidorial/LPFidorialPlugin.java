@@ -76,7 +76,6 @@ public class LPFidorialPlugin extends AbstractLuckPermsPlugin {
 
     private FidorialSender consoleSender;
     private LuckPermsPermissionResolver permissionResolver;
-    private Object serviceOwner;
 
     public LPFidorialPlugin(final LPFidorialBootstrap bootstrap) {
         this.bootstrap = bootstrap;
@@ -209,7 +208,7 @@ public class LPFidorialPlugin extends AbstractLuckPermsPlugin {
     public Stream<Sender> getOnlineSenders() {
         return Stream.concat(
                 Stream.of(getConsoleSender()),
-                getServer().onlinePlayers().stream().map(p -> getSenderFactory().wrap(this.senderFactory.player(p)))
+                getServer().players().online().stream().map(p -> getSenderFactory().wrap(this.senderFactory.player(p)))
         );
     }
 

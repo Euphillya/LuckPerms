@@ -20,7 +20,9 @@ dependencies {
     implementation project(':common')
     compileOnly project(':common:loader-utils')
 
-    compileOnly "fr.fidorial:fidorial-api:${fidorialApiVersion}"
+    compileOnly("fr.fidorial:fidorial-api:${fidorialApiVersion}") {
+        exclude group: 'org.spongepowered', module: 'configurate-yaml'
+    }
     compileOnly 'org.slf4j:slf4j-api:2.0.16'
 }
 

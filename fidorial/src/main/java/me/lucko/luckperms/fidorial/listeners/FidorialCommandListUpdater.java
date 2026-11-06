@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial.listeners;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import me.lucko.luckperms.common.event.listeners.AbstractCommandListUpdater;
 import me.lucko.luckperms.fidorial.LPFidorialPlugin;
 
@@ -36,7 +36,7 @@ import java.util.UUID;
  */
 public class FidorialCommandListUpdater extends AbstractCommandListUpdater<LPFidorialPlugin, Player> {
 
-    public FidorialCommandListUpdater(LPFidorialPlugin plugin) {
+    public FidorialCommandListUpdater(final LPFidorialPlugin plugin) {
         super(plugin, Player.class);
     }
 
@@ -46,12 +46,12 @@ public class FidorialCommandListUpdater extends AbstractCommandListUpdater<LPFid
     }
 
     @Override
-    protected UUID getUniqueId(Player player) {
+    protected UUID getUniqueId(final Player player) {
         return player.uuid();
     }
 
     @Override
-    protected void sendCommandListUpdate(UUID uniqueId) {
-        this.plugin.getServer().player(uniqueId).ifPresent(Player::refreshCommands);
+    protected void sendCommandListUpdate(final UUID uniqueId) {
+        this.plugin.getServer().players().get(uniqueId).ifPresent(Player::refreshCommands);
     }
 }

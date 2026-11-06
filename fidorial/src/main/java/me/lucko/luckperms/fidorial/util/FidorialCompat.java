@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial.util;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import fr.fidorial.event.player.PlayerLoginAttemptEvent;
 import fr.fidorial.scheduler.RegionizedScheduler;
 import fr.fidorial.world.ChunkPos;
@@ -65,12 +65,12 @@ public final class FidorialCompat {
 
     static {
         // built by concatenation so the relocator doesn't rewrite the literal
-        String adventurePkg = "net.kyo".concat("ri.adventure.");
+        final String adventurePkg = "net.kyo".concat("ri.adventure.");
         try {
-            Class<?> audienceClass = Class.forName(adventurePkg + "audience.Audience");
-            Class<?> componentClass = Class.forName(adventurePkg + "text.Component");
-            Class<?> keyClass = Class.forName(adventurePkg + "key.Key");
-            Class<?> serializerClass = Class.forName(adventurePkg + "text.serializer.gson.GsonComponentSerializer");
+            final Class<?> audienceClass = Class.forName(adventurePkg + "audience.Audience");
+            final Class<?> componentClass = Class.forName(adventurePkg + "text.Component");
+            final Class<?> keyClass = Class.forName(adventurePkg + "key.Key");
+            final Class<?> serializerClass = Class.forName(adventurePkg + "text.serializer.gson.GsonComponentSerializer");
 
             PLATFORM_SERIALIZER_INSTANCE = serializerClass.getMethod("gson").invoke(null);
             PLATFORM_SERIALIZER_DESERIALIZE = serializerClass.getMethod("deserialize", Object.class);
@@ -80,7 +80,7 @@ public final class FidorialCompat {
             PLATFORM_WORLD_KEY = World.class.getMethod("key");
             PLATFORM_KEY_AS_STRING = keyClass.getMethod("asString");
             PLATFORM_SCHEDULER_EXECUTE = RegionizedScheduler.class.getMethod("execute", keyClass, ChunkPos.class, Runnable.class);
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new ExceptionInInitializerError(e);
         }
     }
@@ -91,11 +91,11 @@ public final class FidorialCompat {
      * @param component our component
      * @return the platform component
      */
-    public static Object toPlatformComponent(Component component) {
-        String json = GsonComponentSerializer.gson().serialize(component);
+    public static Object toPlatformComponent(final Component component) {
+        final String json = GsonComponentSerializer.gson().serialize(component);
         try {
             return PLATFORM_SERIALIZER_DESERIALIZE.invoke(PLATFORM_SERIALIZER_INSTANCE, json);
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -106,10 +106,10 @@ public final class FidorialCompat {
      * @param audience the audience, e.g. a player
      * @param message the message
      */
-    public static void sendMessage(Object audience, Component message) {
+    public static void sendMessage(final Object audience, final Component message) {
         try {
             PLATFORM_SEND_MESSAGE.invoke(audience, toPlatformComponent(message));
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -120,10 +120,10 @@ public final class FidorialCompat {
      * @param player the player
      * @param reason the kick reason
      */
-    public static void kick(Player player, Component reason) {
+    public static void kick(final Player player, final Component reason) {
         try {
             PLATFORM_PLAYER_KICK.invoke(player, toPlatformComponent(reason));
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -134,10 +134,10 @@ public final class FidorialCompat {
      * @param event the login attempt event
      * @param reason the message shown to the client
      */
-    public static void refuse(PlayerLoginAttemptEvent event, Component reason) {
+    public static void refuse(final PlayerLoginAttemptEvent event, final Component reason) {
         try {
             PLATFORM_LOGIN_ATTEMPT_REFUSE.invoke(event, toPlatformComponent(reason));
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -148,11 +148,11 @@ public final class FidorialCompat {
      * @param world the world
      * @return the key, as a string
      */
-    public static String worldKey(World world) {
+    public static String worldKey(final World world) {
         try {
-            Object key = PLATFORM_WORLD_KEY.invoke(world);
+            final Object key = PLATFORM_WORLD_KEY.invoke(world);
             return (String) PLATFORM_KEY_AS_STRING.invoke(key);
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -165,11 +165,11 @@ public final class FidorialCompat {
      * @param pos the chunk position
      * @param task the task to run
      */
-    public static void executeOnRegion(RegionizedScheduler scheduler, World world, ChunkPos pos, Runnable task) {
+    public static void executeOnRegion(final RegionizedScheduler scheduler, final World world, final ChunkPos pos, final Runnable task) {
         try {
-            Object key = PLATFORM_WORLD_KEY.invoke(world);
+            final Object key = PLATFORM_WORLD_KEY.invoke(world);
             PLATFORM_SCHEDULER_EXECUTE.invoke(scheduler, key, pos, task);
-        } catch (ReflectiveOperationException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }

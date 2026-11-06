@@ -20,7 +20,9 @@ dependencies {
     implementation project(':api')
     implementation project(':common:loader-utils')
 
-    compileOnly "fr.fidorial:fidorial-api:${fidorialApiVersion}"
+    compileOnly("fr.fidorial:fidorial-api:${fidorialApiVersion}") {
+        exclude group: 'org.spongepowered', module: 'configurate-yaml'
+    }
 }
 
 processResources {

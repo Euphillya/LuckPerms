@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.fidorial.sender.FidorialPlayerSender;
 import me.lucko.luckperms.fidorial.sender.FidorialSender;
@@ -36,7 +36,7 @@ import java.util.UUID;
 
 public class FidorialSenderFactory extends SenderFactory<LPFidorialPlugin, FidorialSender> {
 
-    public FidorialSenderFactory(LPFidorialPlugin plugin) {
+    public FidorialSenderFactory(final LPFidorialPlugin plugin) {
         super(plugin);
     }
 
@@ -46,42 +46,42 @@ public class FidorialSenderFactory extends SenderFactory<LPFidorialPlugin, Fidor
      * @param player the player
      * @return the sender
      */
-    public FidorialSender player(Player player) {
+    public FidorialSender player(final Player player) {
         return new FidorialPlayerSender(getPlugin(), player);
     }
 
     @Override
-    protected String getName(FidorialSender sender) {
+    protected String getName(final FidorialSender sender) {
         return sender.getName();
     }
 
     @Override
-    protected UUID getUniqueId(FidorialSender sender) {
+    protected UUID getUniqueId(final FidorialSender sender) {
         return sender.getUniqueId();
     }
 
     @Override
-    protected void sendMessage(FidorialSender sender, Component message) {
+    protected void sendMessage(final FidorialSender sender, final Component message) {
         sender.sendMessage(message);
     }
 
     @Override
-    protected Tristate getPermissionValue(FidorialSender sender, String node) {
+    protected Tristate getPermissionValue(final FidorialSender sender, final String node) {
         return sender.getPermissionValue(node);
     }
 
     @Override
-    protected boolean hasPermission(FidorialSender sender, String node) {
+    protected boolean hasPermission(final FidorialSender sender, final String node) {
         return sender.hasPermission(node);
     }
 
     @Override
-    protected void performCommand(FidorialSender sender, String command) {
+    protected void performCommand(final FidorialSender sender, final String command) {
         sender.performCommand(command);
     }
 
     @Override
-    protected boolean isConsole(FidorialSender sender) {
+    protected boolean isConsole(final FidorialSender sender) {
         return sender.isConsole();
     }
 }

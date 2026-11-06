@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial.service;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import fr.fidorial.permission.PermissionHolder;
 import fr.fidorial.permission.PermissionNode;
 import fr.fidorial.permission.PermissionResolver;

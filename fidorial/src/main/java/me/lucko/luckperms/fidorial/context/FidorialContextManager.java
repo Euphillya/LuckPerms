@@ -25,7 +25,7 @@
 
 package me.lucko.luckperms.fidorial.context;
 
-import fr.fidorial.entity.Player;
+import fr.fidorial.entity.player.Player;
 import me.lucko.luckperms.common.context.manager.SimpleContextManager;
 import me.lucko.luckperms.fidorial.LPFidorialPlugin;
 
@@ -33,12 +33,12 @@ import java.util.UUID;
 
 public class FidorialContextManager extends SimpleContextManager<Player, Player> {
 
-    public FidorialContextManager(LPFidorialPlugin plugin) {
+    public FidorialContextManager(final LPFidorialPlugin plugin) {
         super(plugin, Player.class, Player.class);
     }
 
     @Override
-    public UUID getUniqueId(Player player) {
+    public UUID getUniqueId(final Player player) {
         return player.uuid();
     }
 }

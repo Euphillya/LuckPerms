@@ -47,7 +47,7 @@ dependencies {
         implementation(fabricApi.module(it, '0.161.0+26.3'))
     }
 
-    jarInJar 'me.lucko:fabric-permissions-api:0.7.0'
+    jarInJar 'me.lucko:fabric-permissions-api:0.7.1'
     implementation 'eu.pb4:placeholder-api:3.0.0+26.1'
 
     shade project(':common')

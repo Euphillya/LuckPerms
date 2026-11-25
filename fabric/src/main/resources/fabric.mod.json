@@ -38,7 +38,7 @@
     "fabric-networking-api-v1": "*",
     "fabric-entity-events-v1": "*",
     "fabric-permission-api-v1": "*",
-    "fabric-permissions-api-v0": ">=0.7.0"
+    "fabric-permissions-api-v0": ">=0.7.1"
   },
   "custom": {
     "modmenu:api": true

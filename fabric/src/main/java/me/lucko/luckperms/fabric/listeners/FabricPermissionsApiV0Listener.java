@@ -42,7 +42,6 @@ import me.lucko.luckperms.fabric.model.MixinUser;
 import net.fabricmc.fabric.api.util.TriState;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.jspecify.annotations.NonNull;
@@ -68,22 +67,18 @@ public class FabricPermissionsApiV0Listener {
         OfflineOptionRequestEvent.EVENT.register(this::onOfflineOptionRequest);
     }
 
-    private @NonNull TriState onPermissionCheck(SharedSuggestionProvider source, String permission) {
-        if (source instanceof CommandSourceStack) {
-            Entity entity = ((CommandSourceStack) source).getEntity();
-            if (entity instanceof ServerPlayer) {
-                return playerPermissionCheck((ServerPlayer) entity, permission);
-            }
+    private @NonNull TriState onPermissionCheck(CommandSourceStack source, String permission) {
+        Entity entity = source.getEntity();
+        if (entity instanceof ServerPlayer) {
+            return playerPermissionCheck((ServerPlayer) entity, permission);
         }
         return otherPermissionCheck(source, permission);
     }
 
-    private @NonNull Optional<String> onOptionRequest(SharedSuggestionProvider source, String key) {
-        if (source instanceof CommandSourceStack) {
-            Entity entity = ((CommandSourceStack) source).getEntity();
-            if (entity instanceof ServerPlayer) {
-                return playerGetOption((ServerPlayer) entity, key);
-            }
+    private @NonNull Optional<String> onOptionRequest(CommandSourceStack source, String key) {
+        Entity entity = source.getEntity();
+        if (entity instanceof ServerPlayer) {
+            return playerGetOption((ServerPlayer) entity, key);
         }
         return otherGetOption(source, key);
     }
@@ -114,14 +109,12 @@ public class FabricPermissionsApiV0Listener {
         return fabricTristate(((MixinUser) player).luckperms$hasPermission(permission));
     }
 
-    private TriState otherPermissionCheck(SharedSuggestionProvider source, String permission) {
-        if (source instanceof CommandSourceStack) {
-            String name = ((CommandSourceStack) source).getTextName();
-            VerboseCheckTarget target = VerboseCheckTarget.internal(name);
+    private TriState otherPermissionCheck(CommandSourceStack source, String permission) {
+        String name = source.getTextName();
+        VerboseCheckTarget target = VerboseCheckTarget.internal(name);
 
-            this.plugin.getVerboseHandler().offerPermissionCheckEvent(CheckOrigin.PLATFORM_API_HAS_PERMISSION, target, QueryOptionsImpl.DEFAULT_CONTEXTUAL, permission, TristateResult.UNDEFINED);
-            this.plugin.getPermissionRegistry().offer(permission);
-        }
+        this.plugin.getVerboseHandler().offerPermissionCheckEvent(CheckOrigin.PLATFORM_API_HAS_PERMISSION, target, QueryOptionsImpl.DEFAULT_CONTEXTUAL, permission, TristateResult.UNDEFINED);
+        this.plugin.getPermissionRegistry().offer(permission);
 
         return TriState.DEFAULT;
     }
@@ -130,28 +123,21 @@ public class FabricPermissionsApiV0Listener {
         return Optional.ofNullable(((MixinUser) player).luckperms$getOption(key));
     }
 
-    private Optional<String> otherGetOption(SharedSuggestionProvider source, String key) {
-        if (source instanceof CommandSourceStack) {
-            String name = ((CommandSourceStack) source).getTextName();
-            VerboseCheckTarget target = VerboseCheckTarget.internal(name);
+    private Optional<String> otherGetOption(CommandSourceStack source, String key) {
+        String name = source.getTextName();
+        VerboseCheckTarget target = VerboseCheckTarget.internal(name);
 
-            this.plugin.getVerboseHandler().offerMetaCheckEvent(CheckOrigin.PLATFORM_API, target, QueryOptionsImpl.DEFAULT_CONTEXTUAL, key, StringResult.nullResult());
-        }
+        this.plugin.getVerboseHandler().offerMetaCheckEvent(CheckOrigin.PLATFORM_API, target, QueryOptionsImpl.DEFAULT_CONTEXTUAL, key, StringResult.nullResult());
 
         return Optional.empty();
     }
 
     private static TriState fabricTristate(Tristate tristate) {
-        switch (tristate) {
-            case TRUE:
-                return TriState.TRUE;
-            case FALSE:
-                return TriState.FALSE;
-            case UNDEFINED:
-                return TriState.DEFAULT;
-            default:
-                throw new AssertionError();
-        }
+        return switch (tristate) {
+            case TRUE -> TriState.TRUE;
+            case FALSE -> TriState.FALSE;
+            case UNDEFINED -> TriState.DEFAULT;
+        };
     }
 
 }
